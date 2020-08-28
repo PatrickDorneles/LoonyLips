@@ -1,0 +1,10 @@
+[
+	{
+		"prompts": ["a character", "something to be searched", "a villain", "something the villain did/is doing"],
+		"story": "At that time %s was searching for %s, but he/she wasn't aware that %s was already %s."
+	},
+	{
+		"prompts": ["a name", "a noun", "adverb", "adjective"],
+		"story": "Once upon a time someone called %s ate a %s flavoured sandwich which made him fell all %s inside. It was a %s day."
+	}
+]
