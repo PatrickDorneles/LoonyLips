@@ -7,16 +7,16 @@ onready var PlayerButtonLabel = $RootContainer/InputContainer/PlayerButton/Label
 
 var player_inputs = [];
 
-var template = [
-	{
-		"prompts": ["a character", "something to be searched", "a villain", "something the villain did/is doing"],
-		"story": "At that time %s was searching for %s, but he/she wasn't aware that %s was already %s."
-	},
-	{
-		"prompts": ["a name", "a noun", "adverb", "adjective"],
-		"story": "Once upon a time someone called %s ate a %s flavoured sandwich which made him fell all %s inside. It was a %s day."
-	}
-]
+# var template = [
+# 	{
+# 		"prompts": ["a character", "something to be searched", "a villain", "something the villain did/is doing"],
+# 		"story": "At that time %s was searching for %s, but he/she wasn't aware that %s was already %s."
+# 	},
+# 	{
+# 		"prompts": ["a name", "a noun", "adverb", "adjective"],
+# 		"story": "Once upon a time someone called %s ate a %s flavoured sandwich which made him fell all %s inside. It was a %s day."
+# 	}
+# ]
 
 var current_story: Dictionary
 
@@ -37,7 +37,10 @@ func _on_TextureButton_pressed():
 
 func set_current_story():
 	randomize();
-	current_story = template[randi() % template.size()];
+	var stories = $StoryBook.get_child_count();
+	var selected_story = randi() % stories;
+	current_story.prompts = $StoryBook.get_child(selected_story).prompts;
+	current_story.story = $StoryBook.get_child(selected_story).story;
 	
 func add_to_player_inputs(new_text: String):
 	player_inputs.append(new_text);
