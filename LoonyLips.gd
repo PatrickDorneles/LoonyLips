@@ -6,12 +6,23 @@ onready var PlayerButton = $RootContainer/InputContainer/PlayerButton;
 onready var PlayerButtonLabel = $RootContainer/InputContainer/PlayerButton/Label;
 
 var player_inputs = [];
-var prompts = ["a character", "something to be searched", "a villain", "something the villain did/is doing"];
-var story = "At that time %s was searching for %s, but he/she wasn't aware that %s was already %s.";
 
+var template = [
+	{
+		"prompts": ["a character", "something to be searched", "a villain", "something the villain did/is doing"],
+		"story": "At that time %s was searching for %s, but he/she wasn't aware that %s was already %s."
+	},
+	{
+		"prompts": ["a name", "a noun", "adverb", "adjective"],
+		"story": "Once upon a time someone called %s ate a %s flavoured sandwich which made him fell all %s inside. It was a %s day."
+	}
+]
+
+var current_story: Dictionary
 
 func _ready():
 	DisplayText.text = "Welcome to Loony Lips, we're going to tell a story and have a wonderful time! ";
+	set_current_story();
 	check_player_inputs_length();
 
 func _on_PlayerText_text_entered(new_text: String):
@@ -24,6 +35,9 @@ func _on_TextureButton_pressed():
 		
 	PlayerText.emit_signal("text_entered", PlayerText.text);
 
+func set_current_story():
+	randomize();
+	current_story = template[randi() % template.size()];
 	
 func add_to_player_inputs(new_text: String):
 	player_inputs.append(new_text);
@@ -32,7 +46,7 @@ func add_to_player_inputs(new_text: String):
 	check_player_inputs_length();
 
 func is_story_done():
-	return player_inputs.size() >= prompts.size();
+	return player_inputs.size() >= current_story.prompts.size();
 
 func check_player_inputs_length():
 	if is_story_done():
@@ -41,10 +55,10 @@ func check_player_inputs_length():
 		prompt_player();
 
 func tell_story():
-	DisplayText.text = story % player_inputs;
+	DisplayText.text = current_story.story % player_inputs;
 
 func prompt_player():
-	DisplayText.text += "May I have " + prompts[player_inputs.size()] + " ?";
+	DisplayText.text += "May I have " + current_story.prompts[player_inputs.size()] + " ?";
 	PlayerText.grab_focus();
 
 func change_to_end_player_button():
